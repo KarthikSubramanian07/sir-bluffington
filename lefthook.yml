@@ -1,0 +1,17 @@
+# Pre-commit quality gate. Install locally with `npx lefthook install`.
+# Runs against staged files only; does not touch any remote.
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.{ts,tsx,js,jsx,json,css}"
+      run: npx biome check --write --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+    typecheck:
+      glob: "*.{ts,tsx}"
+      run: npm run typecheck
+
+pre-push:
+  commands:
+    test:
+      run: npm run test
