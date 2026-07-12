@@ -1,0 +1,8 @@
+{
+  // Cloudflare Pages project config. Deploy with: npm run deploy
+  // (which runs `wrangler pages deploy dist`). The project serves static files only —
+  // there is no Worker, no D1, no KV: the entire game runs client-side (spec: $0 infra).
+  "name": "sirbluffington",
+  "compatibility_date": "2025-01-01",
+  "pages_build_output_dir": "dist"
+}
