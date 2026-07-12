@@ -1,0 +1,125 @@
+.posthand {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: rgba(5, 8, 6, 0.72);
+  backdrop-filter: blur(6px);
+  z-index: 40;
+  animation: posthand-in var(--dur-slow) var(--ease);
+}
+@keyframes posthand-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.posthand-card {
+  width: min(520px, 100%);
+  background: linear-gradient(180deg, var(--surface), var(--bg-1));
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-3);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.posthand-title {
+  font-size: var(--step-4);
+  font-weight: 600;
+}
+.posthand-title.is-win {
+  color: var(--gold);
+}
+
+.posthand-pots {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.pot-award {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-1);
+}
+.pot-award-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.pot-award-label {
+  font-size: var(--step--1);
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pot-award-amount {
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--gold);
+}
+.pot-award-winners {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: 2px;
+}
+.pot-award-names {
+  font-weight: 550;
+}
+.pot-award-hand {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.pot-award-odd {
+  font-size: var(--step--2);
+  color: var(--text-faint);
+}
+
+.posthand-notes {
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-4);
+}
+.posthand-notes-h {
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: var(--space-2);
+}
+.posthand-notes ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.posthand-notes li {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+.note-name {
+  color: var(--text);
+  font-weight: 550;
+}
+
+.posthand-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.posthand-hint {
+  text-align: center;
+  font-size: var(--step--2);
+  color: var(--text-faint);
+}

@@ -1,0 +1,106 @@
+/*
+ * Sir Bluffington's Poker — design tokens.
+ *
+ * Direction: dark, engineered, "premium felt". Restraint like Offsuit; one accent only.
+ * - Base is near-black with a faint green cast; felt green appears ONLY on the table.
+ * - A single accent: monocle gold. Used for the button token, primary CTA, winners.
+ * - Type is the signature: data-grade MONO for every number, geometric SANS for UI, and a
+ *   Victorian SERIF for the wordmark and mascot — the gentleman card-sharp's voice.
+ */
+:root {
+  /* ---- surfaces (near-black, faint green cast) ---- */
+  --bg: #0b0e0c;
+  --bg-1: #10130f;
+  --surface: #161a15;
+  --surface-2: #1d221b;
+  --surface-3: #262c23;
+  --line: #2a3128;
+  --line-strong: #3a4237;
+
+  /* ---- felt (table only) ---- */
+  --felt-center: #1a4a31;
+  --felt-mid: #123a26;
+  --felt-edge: #0a2418;
+  --felt-rail: #05100a;
+
+  /* ---- accent: monocle gold ---- */
+  --gold: #e8b84b;
+  --gold-bright: #f4cd6a;
+  --gold-dim: #b28a34;
+  --gold-glow: rgba(232, 184, 75, 0.35);
+
+  /* ---- text ---- */
+  --text: #eaf0ec;
+  --text-muted: #93a09a;
+  --text-faint: #5f6b64;
+  --text-inverse: #0b0e0c;
+
+  /* ---- semantic ---- */
+  --pos: #56c58a;
+  --neg: #e5675f;
+  --warn: #e8b84b;
+
+  /* ---- 4-color deck suits ---- */
+  --suit-spade: #e7ece9;
+  --suit-heart: #e5675f;
+  --suit-diamond: #5aa2ef;
+  --suit-club: #4fc08a;
+  /* 2-color deck overrides applied via [data-deck="two-color"] */
+
+  /* ---- typography ---- */
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: "Fraunces Variable", ui-serif, Georgia, serif;
+
+  /* modular type scale (1.2 minor third), rem-based */
+  --step--2: 0.6944rem;
+  --step--1: 0.8333rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.44rem;
+  --step-3: 1.728rem;
+  --step-4: 2.074rem;
+  --step-5: 2.488rem;
+  --step-6: 3.583rem;
+
+  /* ---- spacing (4px base) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* ---- radius ---- */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-card: 8px;
+
+  /* ---- motion ---- */
+  --dur-fast: 120ms;
+  --dur: 180ms;
+  --dur-slow: 320ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* ---- elevation ---- */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --shadow-3: 0 18px 50px rgba(0, 0, 0, 0.55);
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(0, 0, 0, 0.3);
+
+  /* ---- layout ---- */
+  --maxw: 1180px;
+}
+
+[data-deck="two-color"] {
+  --suit-spade: #e7ece9;
+  --suit-club: #e7ece9;
+  --suit-heart: #e5675f;
+  --suit-diamond: #e5675f;
+}

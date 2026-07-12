@@ -1,0 +1,98 @@
+/* Shared primitives used across screens. */
+
+.wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.wordmark-name {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.wordmark--md .wordmark-name {
+  font-size: var(--step-2);
+}
+.wordmark--sm .wordmark-name {
+  font-size: var(--step-0);
+}
+.wordmark-sub {
+  font-size: 0.62em;
+  letter-spacing: 0.34em;
+  color: var(--gold);
+  transform: translateY(-0.15em);
+}
+
+/* buttons */
+.btn {
+  --btn-bg: var(--surface-2);
+  --btn-fg: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.6em 1.05em;
+  border-radius: var(--r);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--line-strong);
+  font-weight: 550;
+  line-height: 1;
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+.btn:hover {
+  border-color: var(--gold-dim);
+  background: var(--surface-3);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  --btn-bg: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  --btn-fg: #241a05;
+  border-color: var(--gold-dim);
+  font-weight: 650;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 6px 18px rgba(232, 184, 75, 0.14);
+}
+.btn--primary:hover {
+  --btn-bg: linear-gradient(180deg, #f8d478, var(--gold-bright));
+  background: var(--btn-bg);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  border-color: var(--line);
+}
+
+.btn--danger:hover {
+  border-color: var(--neg);
+  color: var(--neg);
+}
+
+.btn--lg {
+  padding: 0.8em 1.4em;
+  font-size: var(--step-1);
+}
+.btn--block {
+  width: 100%;
+  padding: 0.85em;
+  font-size: var(--step-1);
+}
+
+.eyebrow {
+  font-size: var(--step--1);
+  letter-spacing: 0.22em;
+  color: var(--gold);
+}
+
+.card-surface {
+  background: linear-gradient(180deg, var(--surface), var(--bg-1));
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
