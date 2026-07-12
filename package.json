@@ -1,0 +1,44 @@
+{
+  "name": "sir-bluffingtons-poker",
+  "version": "1.0.0",
+  "description": "Solo No-Limit Texas Hold'em trainer. Play poker vs personality-driven AI bots in your browser. $0, no accounts, no backend.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "gen:preflop": "tsx scripts/gen-preflop.ts",
+    "typecheck": "tsc -b --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name sirbluffington"
+  },
+  "dependencies": {
+    "pokersolver": "^2.1.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@fontsource-variable/fraunces": "^5.1.0",
+    "@fontsource-variable/geist": "^5.1.0",
+    "@fontsource-variable/geist-mono": "^5.1.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^2.1.8",
+    "jsdom": "^25.0.1",
+    "lefthook": "^1.8.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,20 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+coverage/
+*.tsbuildinfo
+
+# editor / os
+.DS_Store
+.vscode/
+.idea/
+
+# env / secrets (none needed — this app has no backend)
+.env
+.env.*
+.dev.vars
+
+# cloudflare / wrangler
+.wrangler/
