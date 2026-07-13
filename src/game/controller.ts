@@ -66,6 +66,8 @@ export class GameController {
   private running = false;
   private cancelled = false;
   private botDelayMs: number;
+  /** True when `message` was set by a rejected human action (cleared on next legal act). */
+  private actionError = false;
 
   private preHandStacks = new Map<string, number>();
   private handNumber = 0;
@@ -131,7 +133,20 @@ export class GameController {
     if (!s || s.actor === null) return;
     const actor = this.playerAt(s, s.actor);
     if (!actor.isHuman) return;
-    this.applyAndLog(action, this.humanReason(action));
+    try {
+      this.applyAndLog(action, this.humanReason(action));
+      // Clear only illegal-action banners; keep informational banners (e.g. blinds up).
+      if (this.actionError) {
+        this.actionError = false;
+        this.set({ message: null });
+      }
+    } catch (err) {
+      // Illegal actions should not crash the session (devtools / race / stale UI).
+      const message = err instanceof Error ? err.message : "That action is not allowed.";
+      this.actionError = true;
+      this.set({ message });
+      return;
+    }
     void this.advance();
   }
 
@@ -212,9 +227,13 @@ export class GameController {
           break;
         }
         if (s.actor === null) {
+          // progressHand may settle immediately; capture contributors before that.
+          const contributingBots = s.players
+            .filter((p) => !p.isHuman && p.committedTotal > 0)
+            .map((p) => p.personalityId);
           const prog = progressHand(s);
           if (prog.kind === "settled") {
-            this.applySettled(prog.state, prog.result);
+            this.applySettled(prog.state, prog.result, contributingBots);
             break;
           }
           this.set({ state: prog.state });
@@ -289,12 +308,20 @@ export class GameController {
   private settle(): void {
     const s = this.snapshot.state;
     if (!s) return;
+    // settleHand zeroes committedTotal; snapshot contributors before settlement.
+    const contributingBots = s.players
+      .filter((p) => !p.isHuman && p.committedTotal > 0)
+      .map((p) => p.personalityId);
     const { state, result } = settleHand(s);
-    this.applySettled(state, result);
+    this.applySettled(state, result, contributingBots);
   }
 
-  private applySettled(state: GameState, result: ShowdownResult): void {
-    const stats = this.updateStats(state, result);
+  private applySettled(
+    state: GameState,
+    result: ShowdownResult,
+    contributingBots: PersonalityId[],
+  ): void {
+    const stats = this.updateStats(state, result, contributingBots);
     this.set({
       phase: "showdown",
       state,
@@ -307,7 +334,11 @@ export class GameController {
 
   // --- stats ------------------------------------------------------------------------
 
-  private updateStats(state: GameState, result: ShowdownResult): Stats {
+  private updateStats(
+    state: GameState,
+    result: ShowdownResult,
+    contributingBots: PersonalityId[],
+  ): Stats {
     const stats: Stats = { ...this.snapshot.stats, vsBot: { ...this.snapshot.stats.vsBot } };
     const humanBefore = this.preHandStacks.get(HUMAN_ID) ?? 0;
     const humanAfter = state.players.find((p) => p.id === HUMAN_ID)?.stack ?? humanBefore;
@@ -328,11 +359,10 @@ export class GameController {
     }
 
     // Attribute the hand's net result across the bots that put money in.
-    const contributors = state.players.filter((p) => !p.isHuman && p.committedTotal > 0);
-    if (contributors.length > 0 && delta !== 0) {
-      const share = delta / contributors.length;
-      for (const bot of contributors) {
-        stats.vsBot[bot.personalityId] = (stats.vsBot[bot.personalityId] ?? 0) + share;
+    if (contributingBots.length > 0 && delta !== 0) {
+      const share = delta / contributingBots.length;
+      for (const personalityId of contributingBots) {
+        stats.vsBot[personalityId] = (stats.vsBot[personalityId] ?? 0) + share;
       }
     }
     return stats;

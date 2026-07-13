@@ -27,7 +27,7 @@ Seven-card hand ranking (kickers, board-plays, split-pot detection) is a solved 
 
 Alternatives considered: `phe` (frozen since 2018, no tie helper, so you would rebuild the split logic), and `poker-evaluator` (a 130 MB Two-Plus-Two table, Node-only `fs`, ruled out for the browser).
 
-> One sharp edge: pokersolver renders the wheel's low ace as the string `"1"` and a ten as `"10"`. The card parser accepts both so the evaluator's output round-trips back into the `Card` type. There is a test for the wheel.
+> One sharp edge: pokersolver renders the wheel's low ace as the string `"1"` and a ten as `"10"`. The card parser accepts both so the evaluator's output round-trips back into the `Card` type. Covered by `test/handEval.test.ts`.
 
 ### The NLHE betting engine and side pots: built, test-first
 
@@ -68,7 +68,7 @@ Personality distinctness (the Rock tighter than the Shark, the Shark tighter tha
 
 - TypeScript strict everywhere (`strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, and the rest).
 - Pure, I/O-free core logic, kept separate from React and from the runtime controller.
-- Vitest, 38 tests: side pots, betting legality and the reopen rule, heads-up order, showdown award, a chip-conservation fuzz, AI distinctness and determinism, and a full-session controller integration test.
+- Vitest: side pots, betting legality and the reopen rule, heads-up order, showdown award, wheel ace round-trip, a chip-conservation fuzz, AI distinctness and determinism, and a full-session controller integration test (including vsBot stats).
 - Biome for lint and format. Lefthook runs pre-commit (typecheck, lint) and pre-push (test).
 - GitHub Actions CI: typecheck, lint, test, build.
 - All state changes flow through pure engine functions. The [`GameController`](src/game/controller.ts) is the only stateful, async, I/O-touching layer.

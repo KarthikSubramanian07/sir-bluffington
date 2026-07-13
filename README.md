@@ -8,8 +8,6 @@ Play against hand-tuned personalities, from the nitty *Rock* to the monocled bos
 
 [**▶ Play it**](https://sirbluffington.pages.dev) · [Decisions](DECISIONS.md) · [Setup](SETUP.md)
 
-![Sir Bluffington's Poker, the table](docs/screenshot.png)
-
 </div>
 
 ## Why this exists
@@ -54,7 +52,7 @@ split side pot with the odd chip to the first seat left of the button
 chip conservation across 400 random hands of 2 to 9 players
 ```
 
-38 tests, zero pot-math errors.
+40+ tests, zero pot-math errors.
 
 ## Run it locally
 
@@ -95,7 +93,7 @@ src/
   game/      Runtime controller, localStorage stats/config, React hook (the only stateful layer)
   ui/        React components: felt table, seats, action bar, post-hand review, mascot, cards
   styles/    Design tokens and base styles
-test/        38 tests: engine correctness, AI distinctness, full-session integration
+test/        Vitest suite: engine correctness, AI distinctness, full-session integration
 ```
 
 **Stack:** React, TypeScript (strict), Vite. [`pokersolver`](https://github.com/goldfire/pokersolver) (MIT) handles hand ranking behind a swappable interface. The betting engine, side-pot math, and the bots are original and deterministic. Biome for lint and format, Vitest for tests, GitHub Actions for CI. The full rationale, including the adopt-vs-build audit, is in [DECISIONS.md](DECISIONS.md).
