@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: "es2022",
-    sourcemap: true,
+    // Keep source maps out of production deploys (less client-side source disclosure).
+    sourcemap: false,
   },
   worker: {
     format: "es",
