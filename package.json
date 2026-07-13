@@ -17,7 +17,7 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "check": "npm run typecheck && npm run lint && npm run test",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name sirbluffington"
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name sirbluffington"
   },
   "dependencies": {
     "pokersolver": "^2.1.4",
