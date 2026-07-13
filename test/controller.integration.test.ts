@@ -18,8 +18,12 @@ const config: TableConfig = {
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
 /** Drive a session to a given number of completed hands, auto-checking/calling for the human. */
-async function playHands(controller: GameController, hands: number): Promise<void> {
-  controller.startSession(config);
+async function playHands(
+  controller: GameController,
+  hands: number,
+  cfg: TableConfig = config,
+): Promise<void> {
+  controller.startSession(cfg);
   let completed = 0;
   let guard = 0;
   while (completed < hands) {
@@ -81,6 +85,27 @@ describe("GameController full-session runtime", () => {
       }
     }
     expect(controller.getSnapshot().stats.handsPlayed).toBe(1);
+    controller.dispose();
+  });
+
+  it("escalates blinds in tournament mode and announces the raise", async () => {
+    const tourney: TableConfig = { ...config, smallBlind: 1, bigBlind: 2, escalateEvery: 2 };
+    const controller = new GameController(tourney, { rng: makeRng(99), botDelayMs: 0 });
+    await playHands(controller, 3, tourney); // finish hand 3; blinds raise after hand 2
+
+    // After 2 completed hands the blinds should have doubled at least once.
+    expect(controller.blindLevel.bb).toBeGreaterThanOrEqual(4);
+    const snap = controller.getSnapshot();
+    // The state in play uses the escalated blinds, and a banner announced the raise.
+    expect(snap.state?.blinds.bb).toBe(controller.blindLevel.bb);
+    expect(snap.message).toMatch(/Blinds up/);
+    controller.dispose();
+  });
+
+  it("keeps blinds fixed in cash mode", async () => {
+    const controller = new GameController(config, { rng: makeRng(5), botDelayMs: 0 });
+    await playHands(controller, 5);
+    expect(controller.blindLevel).toEqual({ sb: 1, bb: 2 });
     controller.dispose();
   });
 });

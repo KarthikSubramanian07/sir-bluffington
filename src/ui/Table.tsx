@@ -68,6 +68,12 @@ export function Table({ controller, snap }: { controller: GameController; snap: 
         </div>
       </header>
 
+      {snap.message && (
+        <div className="table-banner num" role="status">
+          {snap.message}
+        </div>
+      )}
+
       <div className="felt-wrap">
         <div className="felt">
           <div className="felt-inner" />

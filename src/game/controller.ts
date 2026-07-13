@@ -121,8 +121,8 @@ export class GameController {
   nextHand(): void {
     if (this.snapshot.phase !== "showdown") return;
     this.button = this.nextOccupiedSeat(this.button);
-    this.maybeEscalateBlinds();
-    this.dealHand(this.snapshot.config);
+    const message = this.maybeEscalateBlinds();
+    this.dealHand(this.snapshot.config, message);
   }
 
   /** Apply the human's chosen action, then let play continue. */
@@ -176,7 +176,7 @@ export class GameController {
     return seats;
   }
 
-  private dealHand(config: TableConfig): void {
+  private dealHand(config: TableConfig, message: string | null = null): void {
     this.handNumber += 1;
     const seats = this.buildSeats(config);
     this.preHandStacks = new Map(seats.map((s) => [s.id, s.stack]));
@@ -194,7 +194,7 @@ export class GameController {
       log: [],
       thinkingSeat: null,
       handNumber: this.handNumber,
-      message: null,
+      message,
     });
     void this.advance();
   }
@@ -340,12 +340,22 @@ export class GameController {
 
   // --- helpers ----------------------------------------------------------------------
 
-  private maybeEscalateBlinds(): void {
+  /**
+   * In tournament mode, double the blinds every `escalateEvery` completed hands. Returns a
+   * banner message when a raise happens (shown on the next hand), or null otherwise.
+   */
+  private maybeEscalateBlinds(): string | null {
     const { escalateEvery } = this.snapshot.config;
     if (escalateEvery > 0 && this.handNumber > 0 && this.handNumber % escalateEvery === 0) {
       this.blinds = { sb: this.blinds.sb * 2, bb: this.blinds.bb * 2, ante: this.blinds.ante };
-      this.set({ message: `Blinds up: ${this.blinds.sb}/${this.blinds.bb}` });
+      return `Blinds up to ${this.blinds.sb}/${this.blinds.bb}`;
     }
+    return null;
+  }
+
+  /** Current blind level, for the UI. */
+  get blindLevel(): { sb: number; bb: number } {
+    return { sb: this.blinds.sb, bb: this.blinds.bb };
   }
 
   private nextOccupiedSeat(from: number): number {
