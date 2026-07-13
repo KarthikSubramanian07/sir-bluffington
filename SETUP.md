@@ -1,6 +1,6 @@
 # Setup
 
-The app is fully client-side — there are **no API keys, no secrets, and no services to provision.** Running it locally is two commands; deploying is one. This checklist is only as long as it is because deploying to a hosting provider inherently needs you to log in once.
+The app is fully client-side, with **no API keys, no secrets, and no services to provision.** Running it locally is two commands; deploying is one. The list below is only this long because deploying to a host needs a one-time login.
 
 ## Run locally (30 seconds)
 
@@ -12,7 +12,7 @@ The app is fully client-side — there are **no API keys, no secrets, and no ser
    ```bash
    npm run dev
    ```
-3. Open the printed URL (default **http://localhost:5173**). Done — deal a hand.
+3. Open the printed URL (default **http://localhost:5173**), then deal a hand.
 
 No `.env`, no config, no accounts.
 
@@ -24,7 +24,7 @@ The only manual step is a one-time Cloudflare login.
    ```bash
    npx wrangler login
    ```
-   — or, for CI/headless, set a `CLOUDFLARE_API_TOKEN` env var with a token that has the *Cloudflare Pages: Edit* permission.
+   For CI or headless use, set a `CLOUDFLARE_API_TOKEN` env var instead, with a token that has the *Cloudflare Pages: Edit* permission.
 2. **Build and deploy:**
    ```bash
    npm run deploy
@@ -49,4 +49,4 @@ For **GitHub Pages** or any host that serves from a subpath, set the correct `ba
 
 ## Continuous integration
 
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs typecheck, lint, test, and build on every push and PR. Nothing to configure — it works out of the box on a public repo.
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs typecheck, lint, test, and build on every push and PR. There is nothing to configure; it works out of the box.

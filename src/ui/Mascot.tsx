@@ -6,7 +6,7 @@ interface MascotProps {
 }
 
 /**
- * Sir Bluffington — a monocled gentleman card-sharp rendered as gold line-art on dark.
+ * Sir Bluffington, a monocled gentleman card-sharp rendered as gold line-art on dark.
  * The brand's signature element (spec Section 07): the felt and the monocle carry the
  * personality; everything else stays quiet.
  */

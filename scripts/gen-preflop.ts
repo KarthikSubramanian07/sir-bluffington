@@ -19,7 +19,7 @@ import type { Card, Rank } from "../src/engine/types.ts";
 
 const { Hand } = pokersolver;
 
-// 4000 rollouts/bucket gives ~±0.008 equity accuracy — ample for rule-based bots — and
+// 4000 rollouts/bucket gives ~±0.008 equity accuracy, ample for rule-based bots, and
 // keeps the whole 169-bucket build under ~2.5 minutes. The output is committed in-tree, so
 // this only re-runs when intentionally regenerating the table.
 const ITERATIONS = 4000;

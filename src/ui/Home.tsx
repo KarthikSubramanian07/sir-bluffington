@@ -56,10 +56,10 @@ export function Home({ controller, snap }: { controller: GameController; snap: S
               Practice poker against opponents with <em>personality.</em>
             </h1>
             <p className="hero-lede">
-              A No-Limit Texas Hold'em trainer where five distinct AI characters — from the nitty{" "}
-              <strong>Rock</strong> to the monocled <strong>Sir Bluffington</strong> — punish your
-              leaks and reward your reads. Deal a hand and get volume reps in seconds. No download,
-              no money, no fuss.
+              A No-Limit Texas Hold'em trainer with five distinct AI characters, from the nitty{" "}
+              <strong>Rock</strong> to the monocled <strong>Sir Bluffington</strong>. They punish
+              your leaks and reward your reads. Deal a hand and get real reps in seconds, with no
+              download and no money at risk.
             </p>
             <div className="hero-cta">
               <button type="button" className="btn btn--primary btn--lg" onClick={sit}>
@@ -184,7 +184,7 @@ export function Home({ controller, snap }: { controller: GameController; snap: S
             <strong>Sir Bluffington's Poker</strong> is a free online poker trainer for practising
             No-Limit Texas Hold'em against the computer. Most poker sites are multiplayer or cost
             money; this one is single-player, instant, and built for reps. Each bot is a hand-tuned
-            character rather than a faceless AI — so you learn to read tendencies, adjust your
+            character rather than a faceless AI, so you learn to read tendencies, adjust your
             ranges, and exploit specific mistakes, the way you would against real opponents. Play as
             many hands as you like; your stats persist in your browser. No sign-up, no chips to buy,
             no gambling.
@@ -223,7 +223,7 @@ export function Home({ controller, snap }: { controller: GameController; snap: S
       <footer className="home-footer">
         <span className="serif">Sir Bluffington's Poker</span>
         <span className="home-footer-note">
-          Play money only. Not gambling. No account, no cost — a free poker practice tool.
+          Play money only. Not gambling. A free poker practice tool with no account and no cost.
         </span>
       </footer>
     </div>

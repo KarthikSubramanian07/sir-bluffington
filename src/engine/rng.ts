@@ -1,5 +1,5 @@
 /**
- * Deterministic, seedable PRNG (mulberry32). Tiny, dependency-free, and reproducible —
+ * Deterministic, seedable PRNG (mulberry32). Tiny, dependency-free, and reproducible -
  * essential for deterministic tests and for reproducible Monte-Carlo equity rollouts.
  *
  * Not cryptographically secure; that is irrelevant for a play-money trainer.
@@ -12,7 +12,7 @@ export interface Rng {
   int(maxExclusive: number): number;
 }
 
-/** mulberry32 — a fast, well-distributed 32-bit generator. */
+/** mulberry32: a fast, well-distributed 32-bit generator. */
 export function makeRng(seed: number): Rng {
   let a = seed >>> 0;
   const next = (): number => {

@@ -75,7 +75,7 @@ function pipSize(size: CardSize): number {
   return size === "lg" ? 40 : size === "md" ? 30 : 20;
 }
 
-/** The gold monocle — the brand's signature mark, reused on card backs and the mascot. */
+/** The gold monocle, the brand's signature mark, reused on card backs and the mascot. */
 function Monocle() {
   return (
     <svg viewBox="0 0 40 40" aria-hidden="true">

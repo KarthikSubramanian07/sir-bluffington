@@ -7,7 +7,7 @@ import type { Action, GameState, LegalAction, Player } from "./types.ts";
  * The reopening rule is the subtle part. `aggressionLevel` increments only on a FULL-size
  * bet or raise. Each player records `actedAtLevel` = the aggression level when they last
  * acted. A player owes an action while `actedAtLevel < aggressionLevel` OR they still owe
- * chips to call. A player may *raise* only when `actedAtLevel < aggressionLevel` — so a
+ * chips to call. A player may *raise* only when `actedAtLevel < aggressionLevel`, so a
  * short all-in (which does not advance the level) lets already-acted players call or fold
  * but never re-raise, while players who have not yet acted this level keep full rights.
  */
@@ -187,12 +187,12 @@ export function playersInHand(state: GameState): Player[] {
   return state.players.filter((p) => p.inHand);
 }
 
-/** True when at most one player remains un-folded — the hand ends without a showdown. */
+/** True when at most one player remains un-folded; the hand ends without a showdown. */
 export function isHandFoldedOut(state: GameState): boolean {
   return playersInHand(state).length <= 1;
 }
 
-/** True when every remaining player is all-in (or only one can act) — run the board out. */
+/** True when every remaining player is all-in (or only one can act), so the board runs out. */
 export function isBettingClosedForStreet(state: GameState): boolean {
   const contesting = playersInHand(state);
   const canAct = contesting.filter((p) => !p.isAllIn);

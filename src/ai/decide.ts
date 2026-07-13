@@ -119,7 +119,7 @@ function decidePostflop(
     // Calling stations chase anything that's already committed; others fold.
     const stationChase = p.bluffFreq === 0 && p.tightness < 0.35 && equity > potOdds * 0.6;
     if (stationChase && find(legal, "call")) {
-      return mk({ type: "call", playerId: player.id }, "called anyway — can't let it go", equity);
+      return mk({ type: "call", playerId: player.id }, "called anyway, can't fold a hand", equity);
     }
     return mk({ type: "fold", playerId: player.id }, foldReason(p), equity);
   }
@@ -185,13 +185,13 @@ function mk(action: Action, reason: string, equity: number): Decision {
 }
 
 function foldReason(p: Personality): string {
-  if (p.id === "rock") return "folded — only plays premium hands";
-  if (p.id === "maniac") return "actually folded — must be pure air";
+  if (p.id === "rock") return "folded; only plays premium hands";
+  if (p.id === "maniac") return "folded, which almost never happens";
   return "folded a hand that wasn't worth it";
 }
 
 function bluffReason(p: Personality): string {
-  if (p.id === "sir-bluffington") return "fired a bluff — the monocle never lies";
-  if (p.id === "maniac") return "bluffed, because of course he did";
+  if (p.id === "sir-bluffington") return "fired a bluff with nothing";
+  if (p.id === "maniac") return "bluffed, of course";
   return "put in a bluff with air";
 }
