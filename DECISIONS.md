@@ -61,6 +61,7 @@ Per the spec (Section 05), there is no LLM. An LLM would add cost, latency, and 
 - Preflop selection gates on VPIP and PFR against a precomputed 169-bucket equity table ([`gen-preflop.ts`](scripts/gen-preflop.ts), committed as JSON, deterministic with a fixed seed).
 - Postflop uses a Monte-Carlo rollout (200 to 320 iterations) run in a web worker so the table stays smooth.
 - Every threshold carries ±10% noise, so the bots cannot be beaten by pure pattern memorization.
+- Personality knobs include an `adaptivity` field reserved for session-level VPIP/PFR tracking. It is not yet wired into `decide.ts`; Sir Bluffington currently plays from static (noisy) thresholds.
 
 Personality distinctness (the Rock tighter than the Shark, the Shark tighter than the Maniac; the Calling Station limps but rarely raises) is asserted by tests that measure emergent VPIP and PFR over thousands of simulated hands.
 
