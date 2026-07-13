@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { makeRng } from "../src/engine/rng.ts";
 import type { TableConfig } from "../src/game/config.ts";
 import { GameController } from "../src/game/controller.ts";
-import { isHumansTurn } from "../src/game/selectors.ts";
+import { humanPlayer, isHumansTurn } from "../src/game/selectors.ts";
 
 const config: TableConfig = {
   tableSize: 6,
@@ -37,8 +37,10 @@ async function playHands(
       continue;
     }
     if (snap.state && isHumansTurn(snap.state)) {
-      // Trivial human: check when free, otherwise call.
-      const canCheck = snap.state.currentBet === snap.state.players[0]!.committedThisRound;
+      // Trivial human: check when free, otherwise call. Use humanPlayer, not players[0]
+      // (players is button-ordered, so seat 0 is not always the hero).
+      const hero = humanPlayer(snap.state)!;
+      const canCheck = snap.state.currentBet === hero.committedThisRound;
       controller.humanAction({ type: canCheck ? "check" : "call", playerId: "hero" });
     }
   }
@@ -68,6 +70,20 @@ describe("GameController full-session runtime", () => {
     expect(stats.handsWon).toBeLessThanOrEqual(stats.handsPlayed);
     expect(stats.showdownsWon).toBeLessThanOrEqual(stats.showdownsSeen);
     expect(Number.isFinite(stats.netChips)).toBe(true);
+    controller.dispose();
+  });
+
+  it("records head-to-head vsBot stats after hands with bot contributions", async () => {
+    const controller = new GameController(config, { rng: makeRng(2026), botDelayMs: 0 });
+    await playHands(controller, 20);
+    const { stats } = controller.getSnapshot();
+    expect(stats.handsPlayed).toBe(20);
+    // After many hands someone almost always put chips in; vsBot must not stay empty forever.
+    const attributed = Object.values(stats.vsBot).reduce((a, b) => a + b, 0);
+    expect(Object.keys(stats.vsBot).length).toBeGreaterThan(0);
+    expect(Number.isFinite(attributed)).toBe(true);
+    // Net chips attributed across bots should equal human net (shares sum to delta each hand).
+    expect(attributed).toBeCloseTo(stats.netChips, 5);
     controller.dispose();
   });
 
@@ -106,6 +122,36 @@ describe("GameController full-session runtime", () => {
     const controller = new GameController(config, { rng: makeRng(5), botDelayMs: 0 });
     await playHands(controller, 5);
     expect(controller.blindLevel).toEqual({ sb: 1, bb: 2 });
+    controller.dispose();
+  });
+
+  it("surfaces illegal human actions without crashing, then clears the banner", async () => {
+    const hu: TableConfig = { ...config, tableSize: 2, opponents: ["rock"] };
+    const controller = new GameController(hu, { rng: makeRng(11), botDelayMs: 0 });
+    controller.startSession(hu);
+    let guard = 0;
+    // Keep dealing until the human actually has an action (fold-outs can skip them).
+    while (true) {
+      if (++guard > 5000) throw new Error("never reached human turn");
+      await tick();
+      const snap = controller.getSnapshot();
+      if (snap.phase === "showdown") {
+        controller.nextHand();
+        continue;
+      }
+      if (snap.state && isHumansTurn(snap.state)) break;
+    }
+    // Raise with no amount is illegal.
+    controller.humanAction({ type: "raise", playerId: "hero" });
+    expect(controller.getSnapshot().message).toMatch(
+      /requires an amount|Illegal|out of bounds|Out of turn/i,
+    );
+    expect(isHumansTurn(controller.getSnapshot().state!)).toBe(true);
+
+    const hero = humanPlayer(controller.getSnapshot().state!)!;
+    const canCheck = controller.getSnapshot().state!.currentBet === hero.committedThisRound;
+    controller.humanAction({ type: canCheck ? "check" : "call", playerId: "hero" });
+    expect(controller.getSnapshot().message).toBeNull();
     controller.dispose();
   });
 });
