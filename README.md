@@ -24,7 +24,7 @@ The five bots each have their own leaks. You learn by exploiting them, which is 
 | **The Calling Station** | Calls almost anything, rarely raises | Value bet relentlessly and never bluff her. |
 | **The Maniac** | Raises constantly, bluffs often | Wait for a real hand and let him pay you off. |
 | **The Shark** | Balanced, positional, patient | The tough one. Respect his aggression. |
-| **Sir Bluffington** | Adaptive, tricky, and full of it | The boss. He bluffs, he adjusts, he levels you. |
+| **Sir Bluffington** | Tricky boss with bluff-heavy thresholds | The boss. He bluffs and levels you. (Session adaptivity is planned, not shipped.) |
 
 Each decision is a rule-based function of hand equity, pot odds, position, and personality, with a little noise so the bots can't be beaten by rote. There is no LLM, no server, and no latency. See [how the AI works](DECISIONS.md#the-bots-are-rule-based).
 
