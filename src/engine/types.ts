@@ -39,7 +39,7 @@ export interface Player {
   isAllIn: boolean;
   /** Chips committed on the current betting round (reset each street). */
   committedThisRound: number;
-  /** Total chips committed this hand — the basis for side-pot math. */
+  /** Total chips committed this hand; the basis for side-pot math. */
   committedTotal: number;
   seatIndex: number;
   position: Position | null;
@@ -97,7 +97,7 @@ export interface GameState {
   sidePots: SidePot[];
   /** Highest committed-this-round amount any player owes to (the current "bet to match"). */
   currentBet: number;
-  /** Size of the last full bet/raise increment — the minimum legal raise increment. */
+  /** Size of the last full bet/raise increment (the minimum legal raise increment). */
   minRaise: number;
   /**
    * Monotonic counter incremented ONLY by a full-size bet/raise (never by a short all-in).

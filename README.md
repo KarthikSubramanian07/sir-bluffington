@@ -2,61 +2,59 @@
 
 # ♠ Sir Bluffington's Poker
 
-**A free, browser-based No-Limit Hold'em trainer where the bots have opinions.**
+**A free, browser-based No-Limit Hold'em trainer with five distinct AI opponents.**
 
-Practice poker against five hand-tuned AI personalities — from the nitty *Rock* to the monocled menace himself. No account, no download, no money. Just deal.
+Play against hand-tuned personalities, from the nitty *Rock* to the monocled boss himself. No account, no download, no money.
 
 [**▶ Play it**](https://sirbluffington.pages.dev) · [Decisions](DECISIONS.md) · [Setup](SETUP.md)
 
-![Sir Bluffington's Poker — the table](docs/screenshot.png)
+![Sir Bluffington's Poker, the table](docs/screenshot.png)
 
 </div>
 
----
-
 ## Why this exists
 
-The open web is weirdly missing a good single-player poker trainer. Everything is either multiplayer (you need friends and a schedule), a paid GTO solver (you need a subscription and a PhD), or a mobile app (you need to install it). Sir Bluffington's Poker is the thing in the gap: **open a tab, sit down, play a thousand hands against opponents you can actually read.**
+There isn't a good single-player poker trainer on the open web. The options are multiplayer rooms (you need friends and a schedule), paid GTO tools (a subscription and a learning curve), or mobile apps (an install). This one opens in a tab: sit down, play hands, and practice against opponents you can read.
 
-The bots aren't a faceless "AI." They're five distinct characters with different leaks, so you learn the thing that actually matters — reading tendencies and exploiting them — instead of memorizing a chart.
+The five bots each have their own leaks. You learn by exploiting them, which is the skill that actually transfers, rather than by memorizing a chart.
 
 ## Meet the table
 
-| Bot | Style | Tell |
+| Bot | Style | How to beat it |
 | --- | --- | --- |
-| **The Rock** | Folds unless he's holding the nuts | Bet at him and watch him disappear. Steal his blinds. |
-| **The Calling Station** | Never met a bet she didn't call | Value bet relentlessly. Never, ever bluff her. |
-| **The Maniac** | Raises now, thinks never | Sit back, let him bloat the pot, snap him off with a real hand. |
-| **The Shark** | Balanced, positional, patient | The one who plays you back. Respect the aggression. |
-| **Sir Bluffington** | The monocled menace — adaptive, tricky, full of it | The boss. Bluffs, adapts, and will absolutely level you. |
+| **The Rock** | Folds unless he has a premium hand | Steal his blinds and fold when he finally raises. |
+| **The Calling Station** | Calls almost anything, rarely raises | Value bet relentlessly and never bluff her. |
+| **The Maniac** | Raises constantly, bluffs often | Wait for a real hand and let him pay you off. |
+| **The Shark** | Balanced, positional, patient | The tough one. Respect his aggression. |
+| **Sir Bluffington** | Adaptive, tricky, and full of it | The boss. He bluffs, he adjusts, he levels you. |
 
-Every decision is a rule-based function of hand equity, pot odds, position, and personality — with a dash of noise so you can't beat them by rote. No LLM, no server, no latency. [How the AI works →](DECISIONS.md#the-bots-are-rule-based-on-purpose)
+Each decision is a rule-based function of hand equity, pot odds, position, and personality, with a little noise so the bots can't be beaten by rote. There is no LLM, no server, and no latency. See [how the AI works](DECISIONS.md#the-bots-are-rule-based).
 
 ## Features
 
-- **Real No-Limit Hold'em** — heads-up, 6-max, or full ring. Cash or escalating-blind (tournament) structure.
-- **A correct engine.** Multiway side pots, the min-raise "no-reopen" rule, the heads-up button exception, split pots with odd-chip distribution — all of it, verified by an actual test suite (see below).
-- **Post-hand review** — every showdown reveals the bots' cards, the pot distribution (including each side pot), and a one-line *why* for the notable plays. "The Maniac bluffed the river." "The Rock folded — only plays premium hands."
-- **Live equity** via Monte-Carlo rollouts, computed in a web worker so the table never stutters.
-- **Stats that stick** — hands played, showdown win %, biggest pot, net chips, and your head-to-head record vs each bot, saved in your browser.
-- **Keyboard-first** — `F` fold, `C` check/call, `R` raise, `Enter` to confirm / deal the next hand.
+- **Full No-Limit Hold'em.** Heads-up, 6-max, or full ring. Cash or escalating-blind (tournament) structure.
+- **A correct engine.** Multiway side pots, the min-raise "no-reopen" rule, the heads-up button exception, and split pots with odd-chip distribution, all verified by tests.
+- **Post-hand review.** Every showdown reveals the bots' cards, the pot distribution including each side pot, and a one-line reason for the notable plays.
+- **Live equity** from Monte-Carlo rollouts, computed in a web worker so the table stays smooth.
+- **Stats that persist.** Hands played, showdown win rate, biggest pot, net chips, and your record against each bot, stored in your browser.
+- **Keyboard-first.** `F` fold, `C` check/call, `R` raise, `Enter` to confirm and to deal the next hand.
 - Dark, engineered UI. Four-color or two-color deck. Reduced-motion respected.
 
-## The hard part: pot math
+## Pot math
 
-Side pots are where poker engines go to die. This one treats them as the acceptance test. The [side-pot layering](src/engine/sidepots.ts) and [showdown award](src/engine/showdown.ts) were written **test-first** against the spec's exact matrix, and chip conservation is fuzz-tested across 400 randomized hands:
+Side pots are the part most poker engines get wrong, so they are the acceptance test here. The [side-pot layering](src/engine/sidepots.ts) and [showdown award](src/engine/showdown.ts) were written test-first against the spec's matrix, and chip conservation is fuzz-tested across 400 random hands:
 
 ```
-✓ 3-way all-in, three stack sizes → main + two side pots
-✓ uncalled overbet returns to its owner
-✓ all-in call for less than a full raise
-✓ short all-in does NOT reopen betting          ← the classic bug, tested
-✓ heads-up: button posts SB and acts first preflop
-✓ split side pot with odd chip to first seat left of the button
-✓ chip conservation across 400 random hands of 2–9 players
+3-way all-in, three stack sizes, main plus two side pots
+uncalled overbet returned to its owner
+all-in call for less than a full raise
+short all-in does NOT reopen betting (the classic bug)
+heads-up: button posts the small blind and acts first preflop
+split side pot with the odd chip to the first seat left of the button
+chip conservation across 400 random hands of 2 to 9 players
 ```
 
-**37 tests, zero pot-math errors.** That's the whole point.
+38 tests, zero pot-math errors.
 
 ## Run it locally
 
@@ -64,48 +62,48 @@ Requires Node 20+.
 
 ```bash
 npm install
-npm run dev          # → http://localhost:5173
+npm run dev          # http://localhost:5173
 ```
 
-That's it — no env file, no keys, no services. The app is entirely client-side.
+No env file, no keys, no services. The app is entirely client-side.
 
 Other scripts:
 
 ```bash
 npm test             # run the Vitest suite
-npm run check        # typecheck + lint + test
-npm run build        # production build → dist/
-npm run gen:preflop  # regenerate the 169-bucket preflop equity table (only if re-tuning)
+npm run check        # typecheck, lint, test
+npm run build        # production build to dist/
+npm run gen:preflop  # regenerate the 169-bucket preflop equity table (only when re-tuning)
 ```
 
 ## Deploy
 
-Static build → [Cloudflare Pages](https://pages.cloudflare.com) (free, zero egress). One command:
+The build is static files, so any static host works. For [Cloudflare Pages](https://pages.cloudflare.com) (free, zero egress):
 
 ```bash
-npm run deploy       # builds and runs `wrangler pages deploy`
+npm run deploy       # builds, then runs `wrangler pages deploy`
 ```
 
-Full walkthrough in [SETUP.md](SETUP.md). It'll land at `https://<project>.pages.dev` — no origin server, no bill.
+Full walkthrough in [SETUP.md](SETUP.md). It lands at `https://<project>.pages.dev` with no origin server.
 
 ## How it's built
 
 ```
 src/
-  engine/    Pure NLHE rules — cards, betting state machine, side pots, showdown, hand loop
-  ai/        Rule-based personalities, preflop equity table, Monte-Carlo, decision fn, worker
+  engine/    Pure NLHE rules: cards, betting state machine, side pots, showdown, hand loop
+  ai/        Personalities, preflop equity table, Monte-Carlo, decision function, worker
   game/      Runtime controller, localStorage stats/config, React hook (the only stateful layer)
-  ui/        React components — felt table, seats, action bar, post-hand review, mascot, cards
-  styles/    Design tokens + base styles
-test/        37 tests — engine correctness, AI distinctness, full-session integration
+  ui/        React components: felt table, seats, action bar, post-hand review, mascot, cards
+  styles/    Design tokens and base styles
+test/        38 tests: engine correctness, AI distinctness, full-session integration
 ```
 
-**Stack:** React + TypeScript (strict) + Vite. [`pokersolver`](https://github.com/goldfire/pokersolver) (MIT) for hand ranking, behind a swappable interface. Everything else — the betting engine, side-pot math, the bots — is original and deterministic. Biome for lint/format, Vitest for tests, GitHub Actions for CI. The full rationale, including the adopt-vs-build audit, is in [DECISIONS.md](DECISIONS.md).
+**Stack:** React, TypeScript (strict), Vite. [`pokersolver`](https://github.com/goldfire/pokersolver) (MIT) handles hand ranking behind a swappable interface. The betting engine, side-pot math, and the bots are original and deterministic. Biome for lint and format, Vitest for tests, GitHub Actions for CI. The full rationale, including the adopt-vs-build audit, is in [DECISIONS.md](DECISIONS.md).
 
 ## Not gambling
 
-Play money only. No real currency, no purchasable chips, no accounts, no data collection. Just a place to get reps. Poker and "Texas Hold'em" are generic; the bots and art are original.
+Play money only. No real currency, no purchasable chips, no accounts, no data collection. Poker and "Texas Hold'em" are generic; the bots and art are original.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). `pokersolver` is MIT.
+MIT, see [LICENSE](LICENSE). `pokersolver` is MIT.

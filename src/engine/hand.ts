@@ -52,7 +52,7 @@ function seatsFromButton(seats: SeatConfig[], button: number): SeatConfig[] {
 
 /**
  * Build the initial state for a hand: assign positions, post antes and blinds, deal hole
- * cards, and set the first player to act — including the heads-up exception where the
+ * cards, and set the first player to act, including the heads-up exception where the
  * button posts the small blind and acts first preflop (spec Section 04).
  */
 export function createHand(seats: SeatConfig[], deck: Card[], config: HandConfig): GameState {

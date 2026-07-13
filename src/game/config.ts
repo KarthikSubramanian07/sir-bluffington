@@ -55,7 +55,7 @@ export function saveConfig(config: TableConfig): void {
   try {
     localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
   } catch {
-    // storage full or blocked — non-fatal, the app runs fine without persistence.
+    // storage full or blocked; non-fatal, the app runs fine without persistence.
   }
 }
 

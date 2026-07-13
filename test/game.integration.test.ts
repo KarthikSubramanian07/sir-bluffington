@@ -93,7 +93,7 @@ describe("full hand: multiway all-in side pots (acceptance test)", () => {
 
 /**
  * Fuzz test: play many full random hands where every actor takes a random legal action.
- * The invariant that must never break is total-chip conservation and non-negative stacks —
+ * The invariant that must never break is total-chip conservation and non-negative stacks -
  * a direct guard on the Definition of Done ("zero errors in pot math").
  */
 describe("chip-conservation fuzz", () => {

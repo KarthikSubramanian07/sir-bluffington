@@ -115,7 +115,7 @@ describe("settleShowdown", () => {
       player("B", 1, ["Kh", "Kd"], 10, false),
       player("C", 2, ["Qh", "Qd"], 5, false),
     ];
-    // Board incomplete (folded preflop) — no hand names, A scoops.
+    // Board incomplete (folded preflop), so no hand names; A scoops.
     const res = settleShowdown(contenders, [], 0, 3, defaultEvaluator);
     expect(res.winningsByPlayer).toEqual({ A: 45 });
     expect(res.awards.every((a) => a.handName === null)).toBe(true);

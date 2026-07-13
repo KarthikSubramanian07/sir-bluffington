@@ -5,17 +5,17 @@ export interface Contribution {
   playerId: string;
   /** Total chips this player committed this hand (folded players still contribute). */
   committedTotal: number;
-  /** false if the player folded — folded players' chips stay in the pot but cannot win it. */
+  /** false if the player folded. Folded players' chips stay in the pot but cannot win it. */
   inHand: boolean;
 }
 
 /**
- * Layered side-pot construction — the hardest logic in the engine (spec Section 04).
+ * Layered side-pot construction, the hardest logic in the engine (spec Section 04).
  *
  * Algorithm: repeatedly peel the smallest remaining contribution level. Every player who
  * still has chips left to peel contributes `level` to that layer; the layer's eligible
  * winners are the still-in (non-folded) contributors at that level. As levels rise, the
- * contributor set only shrinks, so pots are naturally nested — main pot first, side pots
+ * contributor set only shrinks, so pots are naturally nested: main pot first, then side pots
  * after, each with its own `eligiblePlayerIds`.
  *
  * Properties guaranteed:
@@ -56,7 +56,7 @@ export function computeSidePots(contributions: Contribution[]): SidePot[] {
         pots[pots.length - 1]!.amount += amount;
       } else {
         // No prior pot yet (everyone all-in folded at the base level, impossible in a real
-        // hand since a fold-out ends before showdown) — keep the chips in a dead pot.
+        // hand since a fold-out ends before showdown), so keep the chips in a dead pot.
         pots.push({ amount, eligiblePlayerIds: [] });
       }
       continue;

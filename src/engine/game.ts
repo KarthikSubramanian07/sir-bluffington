@@ -11,7 +11,7 @@ export function startHand(seats: SeatConfig[], config: HandConfig, rng: Rng): Ga
   return createHand(seats, shuffledDeck(rng), config);
 }
 
-/** Start a hand from an explicit deck — used by deterministic tests. */
+/** Start a hand from an explicit deck, used by deterministic tests. */
 export function startHandWithDeck(
   seats: SeatConfig[],
   config: HandConfig,

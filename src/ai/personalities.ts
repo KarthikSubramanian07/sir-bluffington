@@ -10,9 +10,9 @@ export interface Personality {
   name: string;
   /** One-line character used in the UI and post-hand "why" insights. */
   tagline: string;
-  /** Voluntarily-put-money-in-pot frequency — how often they play a hand at all. */
+  /** Voluntarily-put-money-in-pot frequency: how often they play a hand at all. */
   vpip: number;
-  /** Preflop-raise frequency — how often playing means raising. */
+  /** Preflop-raise frequency: how often playing means raising. */
   pfr: number;
   /** How readily they bet/raise rather than call when continuing. */
   aggression: number;

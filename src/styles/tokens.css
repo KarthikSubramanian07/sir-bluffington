@@ -1,11 +1,11 @@
 /*
- * Sir Bluffington's Poker — design tokens.
+ * Sir Bluffington's Poker design tokens.
  *
  * Direction: dark, engineered, "premium felt". Restraint like Offsuit; one accent only.
  * - Base is near-black with a faint green cast; felt green appears ONLY on the table.
  * - A single accent: monocle gold. Used for the button token, primary CTA, winners.
  * - Type is the signature: data-grade MONO for every number, geometric SANS for UI, and a
- *   Victorian SERIF for the wordmark and mascot — the gentleman card-sharp's voice.
+ *   Victorian SERIF for the wordmark and mascot, the gentleman card-sharp's voice.
  */
 :root {
   /* ---- surfaces (near-black, faint green cast) ---- */

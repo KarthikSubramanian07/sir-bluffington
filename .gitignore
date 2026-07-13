@@ -11,7 +11,7 @@ coverage/
 .vscode/
 .idea/
 
-# env / secrets (none needed — this app has no backend)
+# env / secrets (none needed; this app has no backend)
 .env
 .env.*
 .dev.vars

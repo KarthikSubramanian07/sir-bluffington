@@ -39,7 +39,7 @@ export function PostHand({ state, showdown, log, onNext, onLeave }: PostHandProp
               </div>
               <div className="pot-award-winners">
                 <span className="pot-award-names">
-                  {award.winnerIds.map(nameOf).join(", ") || "—"}
+                  {award.winnerIds.map(nameOf).join(", ") || "-"}
                 </span>
                 {award.handName && <span className="pot-award-hand">{award.handName}</span>}
                 {award.oddChips > 0 && (
