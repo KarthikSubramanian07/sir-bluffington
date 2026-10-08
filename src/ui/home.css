@@ -307,6 +307,17 @@
   color: var(--text-faint);
   font-size: var(--step--1);
 }
+.home-footer-links {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.home-footer-links a {
+  color: var(--text-muted);
+}
+.home-footer-links a:hover {
+  color: var(--text);
+}
 
 @media (max-width: 780px) {
   .hero {
