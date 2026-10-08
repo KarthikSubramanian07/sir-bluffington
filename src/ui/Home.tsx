@@ -4,6 +4,7 @@ import type { PersonalityId } from "../engine/types.ts";
 import { SELECTABLE_BOTS, type TableConfig, fitOpponents, saveConfig } from "../game/config.ts";
 import type { GameController, Snapshot } from "../game/controller.ts";
 import { Mascot } from "./Mascot.tsx";
+import { SiteFooter } from "./SiteFooter.tsx";
 import { StatsPanel } from "./StatsPanel.tsx";
 import { Wordmark } from "./Wordmark.tsx";
 import "./home.css";
@@ -220,12 +221,7 @@ export function Home({ controller, snap }: { controller: GameController; snap: S
         </section>
       </main>
 
-      <footer className="home-footer">
-        <span className="serif">Sir Bluffington's Poker</span>
-        <span className="home-footer-note">
-          Play money only. Not gambling. A free poker practice tool with no account and no cost.
-        </span>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

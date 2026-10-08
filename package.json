@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && tsx scripts/build-pages.ts",
     "preview": "vite preview",
     "gen:preflop": "tsx scripts/gen-preflop.ts",
     "typecheck": "tsc -b --noEmit",
@@ -36,6 +36,7 @@
     "@vitest/coverage-v8": "^4.1.10",
     "happy-dom": "^20.11.1",
     "lefthook": "^1.8.5",
+    "marked": "^18.1.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite": "^8.1.4",

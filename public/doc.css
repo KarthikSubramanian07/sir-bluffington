@@ -1,0 +1,52 @@
+/* Prose styles for the static About, Contact, Privacy, and 404 pages. Design tokens and
+   the shared header/footer styles come from the app stylesheet linked before this one. */
+.doc-brand:hover {
+  text-decoration: none;
+}
+.doc-main {
+  max-width: 72ch;
+}
+.prose {
+  padding: var(--space-7) 0 var(--space-6);
+  color: var(--text-muted);
+}
+.prose h1 {
+  font-family: var(--font-serif);
+  font-size: var(--step-4, 2.07rem);
+  color: var(--text);
+  margin-bottom: var(--space-5);
+}
+.prose h2 {
+  font-size: var(--step-1);
+  color: var(--text);
+  margin: var(--space-6) 0 var(--space-3);
+}
+.prose p,
+.prose ul {
+  margin-bottom: var(--space-4);
+}
+.prose ul {
+  padding-left: 1.2em;
+}
+.prose li {
+  margin-bottom: var(--space-2);
+}
+.prose blockquote {
+  margin: 0 0 var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-left: 2px solid var(--gold);
+  background: var(--surface);
+  border-radius: 0 var(--r) var(--r) 0;
+  color: var(--text);
+}
+.prose blockquote p {
+  margin: 0;
+}
+.prose strong {
+  color: var(--text);
+}
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--gold);
+}
