@@ -63,7 +63,7 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-No env file, no keys, no services. The app is entirely client-side.
+No env file, no keys, no services. The game is entirely client-side. Run `npx wrangler pages dev dist` after a build to exercise the Markdown negotiation middleware locally.
 
 Other scripts:
 
@@ -84,6 +84,25 @@ npm run deploy       # builds, then runs `wrangler pages deploy`
 
 Full walkthrough in [SETUP.md](SETUP.md). It lands at `https://<project>.pages.dev` with no origin server.
 
+## For AI agents
+
+The site is built to be read by agents as well as people:
+
+| What | Where |
+| --- | --- |
+| Site index with "when to use this" guidance | [`/llms.txt`](https://sirbluffington.pages.dev/llms.txt) |
+| Markdown for any page | send `Accept: text/markdown` to the page URL, or fetch `/index.md`, `/about.md`, ... |
+| Real 404s | unknown paths return HTTP 404, as Markdown for Markdown clients |
+| Content without JavaScript | the landing page is prerendered into `index.html` at build time |
+| Trust pages | [`/about`](https://sirbluffington.pages.dev/about), [`/contact`](https://sirbluffington.pages.dev/contact), [`/privacy`](https://sirbluffington.pages.dev/privacy) |
+
+```bash
+curl -i -H 'Accept: text/markdown' https://sirbluffington.pages.dev/          # Markdown, Vary: Accept
+curl -i -H 'Accept: text/markdown' https://sirbluffington.pages.dev/nope      # 404, Markdown body
+```
+
+The only server-side code is a tiny Pages middleware ([`functions/_middleware.ts`](functions/_middleware.ts)) that does content negotiation; the logic lives in [`src/edge/`](src/edge) and is unit-tested. Page copy lives once, as Markdown, in [`content/`](content); `npm run build` turns it into the static HTML pages and their Markdown twins.
+
 ## How it's built
 
 ```
@@ -93,6 +112,11 @@ src/
   game/      Runtime controller, localStorage stats/config, React hook (the only stateful layer)
   ui/        React components: felt table, seats, action bar, post-hand review, mascot, cards
   styles/    Design tokens and base styles
+  edge/      Accept-header negotiation and 404 handling for the Pages middleware
+  prerender.tsx  Build-time render of the landing page (content without JavaScript)
+content/     Markdown source for the homepage twin, About, Contact, Privacy, and 404
+functions/   Cloudflare Pages middleware (adapts src/edge to the Pages runtime)
+scripts/     Preflop table generator; build-pages.ts (prerender + Markdown pages)
 test/        Vitest suite: engine correctness, AI distinctness, full-session integration
 ```
 
