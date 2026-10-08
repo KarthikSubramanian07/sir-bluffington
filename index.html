@@ -15,8 +15,11 @@
       content="poker trainer, play poker vs computer, poker practice online, free poker AI, texas holdem trainer, play poker vs AI, single player poker"
     />
     <link rel="canonical" href="https://sirbluffington.pages.dev/" />
+    <link rel="alternate" type="text/markdown" href="/index.md" title="Markdown version" />
+    <link rel="help" type="text/plain" href="/llms.txt" title="llms.txt for AI agents" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sir Bluffington's Poker" />
     <meta property="og:url" content="https://sirbluffington.pages.dev/" />
     <meta property="og:title" content="Sir Bluffington's Poker: Free Poker Trainer vs AI" />
     <meta
@@ -41,14 +44,42 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Sir Bluffington's Poker",
-        "url": "https://sirbluffington.pages.dev/",
-        "image": "https://sirbluffington.pages.dev/og.png",
-        "applicationCategory": "GameApplication",
-        "operatingSystem": "Any (web browser)",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-        "description": "Free browser-based No-Limit Texas Hold'em trainer. Play poker against personality-driven AI bots, with no account, download, or real money."
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://sirbluffington.pages.dev/#organization",
+            "name": "Sir Bluffington's Poker",
+            "url": "https://sirbluffington.pages.dev/",
+            "logo": "https://sirbluffington.pages.dev/og.png",
+            "description": "Maker of Sir Bluffington's Poker, a free, open-source No-Limit Texas Hold'em trainer that runs in the browser.",
+            "sameAs": ["https://github.com/KarthikSubramanian07/sir-bluffington"],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer support",
+              "url": "https://github.com/KarthikSubramanian07/sir-bluffington/issues",
+              "availableLanguage": "en"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://sirbluffington.pages.dev/#website",
+            "name": "Sir Bluffington's Poker",
+            "alternateName": "Sir Bluffington's Poker Trainer",
+            "url": "https://sirbluffington.pages.dev/",
+            "publisher": { "@id": "https://sirbluffington.pages.dev/#organization" }
+          },
+          {
+            "@type": "WebApplication",
+            "name": "Sir Bluffington's Poker",
+            "url": "https://sirbluffington.pages.dev/",
+            "image": "https://sirbluffington.pages.dev/og.png",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Any (web browser)",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "publisher": { "@id": "https://sirbluffington.pages.dev/#organization" },
+            "description": "Free browser-based No-Limit Texas Hold'em trainer. Play poker against personality-driven AI bots, with no account, download, or real money."
+          }
+        ]
       }
     </script>
   </head>
