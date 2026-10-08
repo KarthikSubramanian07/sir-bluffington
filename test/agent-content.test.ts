@@ -90,6 +90,12 @@ describe("index.html and sitemap", () => {
     const org = ld["@graph"].find((n: { "@type": string }) => n["@type"] === "Organization");
     expect(org.contactPoint.contactType).toBeTruthy();
     expect(org.contactPoint.url).toContain("/issues");
+    expect(org.address).toMatchObject({
+      "@type": "PostalAddress",
+      addressLocality: "Berkeley",
+      addressRegion: "CA",
+      addressCountry: "US",
+    });
   });
 
   it("advertises the Markdown twin and llms.txt", () => {
