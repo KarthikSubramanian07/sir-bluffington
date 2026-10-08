@@ -16,6 +16,10 @@ Questions about how a bot plays, how equity is calculated, or why a pot was spli
 
 If you find a security problem, please open a GitHub issue that says you have a security report without sharing the details, and the maintainers will arrange a private channel.
 
+## Where we are
+
+Sir Bluffington's Poker is made in Berkeley, California, United States. The project has no office or phone line; GitHub issues are the way to get in touch.
+
 ## Response times
 
 This is a free, volunteer-maintained project. Issues are usually read within a few days. There is no paid support, and there are no accounts, so there is never anything to recover or refund.
