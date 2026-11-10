@@ -32,7 +32,8 @@
   /* ---- text ---- */
   --text: #eaf0ec;
   --text-muted: #93a09a;
-  --text-faint: #5f6b64;
+  /* #7a8780 clears 4.5:1 on --bg and --surface (WCAG 1.4.3); prior #5f6b64 was ~3.5:1. */
+  --text-faint: #7a8780;
   --text-inverse: #0b0e0c;
 
   /* ---- semantic ---- */

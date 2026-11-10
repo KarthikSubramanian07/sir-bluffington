@@ -106,9 +106,10 @@ export function renderDocPage(doc: DocSource, shell: Shell): string {
     <link rel="stylesheet" href="/doc.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <div class="home">
       ${shell.header}
-      <main class="home-main doc-main">
+      <main id="main" class="home-main doc-main" tabindex="-1">
         <article class="prose">
 ${markdownToHtml(doc.markdown)}
         </article>
