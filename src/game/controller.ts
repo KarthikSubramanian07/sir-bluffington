@@ -36,6 +36,8 @@ export interface Snapshot {
   thinkingSeat: number | null;
   handNumber: number;
   message: string | null;
+  /** When true, bot turns wait until resume (WCAG 2.2.2 pause). */
+  paused: boolean;
 }
 
 const HUMAN_ID = "hero";
@@ -87,6 +89,7 @@ export class GameController {
       thinkingSeat: null,
       handNumber: 0,
       message: null,
+      paused: false,
     };
   }
 
@@ -117,7 +120,20 @@ export class GameController {
 
   leaveTable(): void {
     this.cancelled = true;
-    this.set({ phase: "config", state: null, showdown: null, thinkingSeat: null, message: null });
+    this.set({
+      phase: "config",
+      state: null,
+      showdown: null,
+      thinkingSeat: null,
+      message: null,
+      paused: false,
+    });
+  }
+
+  /** Pause or resume bot play and table motion. Human actions still apply when paused. */
+  setPaused(paused: boolean): void {
+    if (this.snapshot.phase === "config") return;
+    this.set({ paused });
   }
 
   nextHand(): void {
@@ -249,6 +265,8 @@ export class GameController {
         this.set({ thinkingSeat: actor.seatIndex });
         await this.delay(this.botDelayMs);
         if (this.cancelled || this.snapshot.state !== s) break;
+        await this.waitWhilePaused();
+        if (this.cancelled || this.snapshot.state !== s) break;
 
         const decision = await this.botDecision(s, actor);
         if (this.cancelled || this.snapshot.state !== s) break;
@@ -257,6 +275,12 @@ export class GameController {
     } finally {
       this.running = false;
       this.set({ thinkingSeat: null });
+    }
+  }
+
+  private async waitWhilePaused(): Promise<void> {
+    while (this.snapshot.paused && !this.cancelled) {
+      await this.delay(120);
     }
   }
 

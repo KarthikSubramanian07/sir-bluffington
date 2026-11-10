@@ -34,8 +34,23 @@ export function Seat({
   if (isWinner) classes.push("seat--winner");
   if (player.isHuman) classes.push("seat--hero");
 
+  const statusBits = [
+    player.name,
+    player.isAllIn ? "all-in" : `${player.stack} chips`,
+    !player.inHand ? "folded" : null,
+    isActor ? "to act" : null,
+    isThinking ? "thinking" : null,
+    isWinner ? `won ${winnings}` : null,
+    lastAction && player.inHand ? lastAction : null,
+  ].filter(Boolean);
+
   return (
-    <div className={classes.join(" ")} style={style}>
+    <div
+      className={classes.join(" ")}
+      style={style}
+      role="group"
+      aria-label={statusBits.join(", ")}
+    >
       <div className="seat-cards">
         {player.holeCards.length > 0 ? (
           player.holeCards.map((c, i) => (
@@ -51,7 +66,7 @@ export function Seat({
           <div className="seat-cards-empty" />
         )}
         {isButton && (
-          <span className="dealer-btn" title="Dealer button">
+          <span className="dealer-btn" title="Dealer button" aria-label="Dealer button">
             D
           </span>
         )}

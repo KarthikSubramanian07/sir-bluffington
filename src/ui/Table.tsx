@@ -7,6 +7,7 @@ import type { GameController, LogEntry, Snapshot } from "../game/controller.ts";
 import { humanOptions, isHumansTurn } from "../game/selectors.ts";
 import { ActionBar } from "./ActionBar.tsx";
 import { Chips } from "./Chips.tsx";
+import { GameAnnouncer } from "./GameAnnouncer.tsx";
 import { PostHand } from "./PostHand.tsx";
 import { Seat } from "./Seat.tsx";
 import { Wordmark } from "./Wordmark.tsx";
@@ -22,10 +23,21 @@ export function Table({ controller, snap }: { controller: GameController; snap: 
         e.preventDefault();
         controller.nextHand();
       }
+      if ((e.key === "p" || e.key === "P") && phase !== "showdown") {
+        const t = e.target;
+        if (
+          t instanceof HTMLInputElement ||
+          t instanceof HTMLTextAreaElement ||
+          t instanceof HTMLSelectElement
+        )
+          return;
+        e.preventDefault();
+        controller.setPaused(!snap.paused);
+      }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [phase, controller]);
+  }, [phase, controller, snap.paused]);
 
   const winningIds = useMemo(
     () => (showdown && state ? winningCardIds(state) : new Set<string>()),
@@ -44,7 +56,11 @@ export function Table({ controller, snap }: { controller: GameController; snap: 
   const lastActions = lastActionBySeat(snap.log, state);
 
   return (
-    <div className="table-screen">
+    <div className={`table-screen${snap.paused ? " is-paused" : ""}`}>
+      <a className="skip-link" href="#table-main">
+        Skip to table
+      </a>
+      <GameAnnouncer snap={snap} />
       <header className="table-top">
         <button
           type="button"
@@ -65,6 +81,15 @@ export function Table({ controller, snap }: { controller: GameController; snap: 
             {snap.stats.netChips >= 0 ? "+" : ""}
             {snap.stats.netChips}
           </span>
+          <span className="table-meta-sep">·</span>
+          <button
+            type="button"
+            className="btn btn--ghost table-pause"
+            aria-pressed={snap.paused}
+            onClick={() => controller.setPaused(!snap.paused)}
+          >
+            {snap.paused ? "Resume" : "Pause"} <kbd>P</kbd>
+          </button>
         </div>
       </header>
 
@@ -73,12 +98,17 @@ export function Table({ controller, snap }: { controller: GameController; snap: 
           {snap.message}
         </div>
       )}
+      {snap.paused && (
+        <div className="table-banner num" role="status">
+          Paused — bots are waiting. Press P or Resume to continue.
+        </div>
+      )}
 
-      <div className="felt-wrap">
-        <div className="felt">
-          <div className="felt-inner" />
+      <main id="table-main" className="felt-wrap" tabIndex={-1} aria-label="Poker table">
+        <div className="felt" role="group" aria-label={`Hand ${snap.handNumber}, pot ${potNow}`}>
+          <div className="felt-inner" aria-hidden="true" />
           <div className="felt-center">
-            <div className="board">
+            <div className="board" role="group" aria-label="Community cards">
               {[0, 1, 2, 3, 4].map((i) => {
                 const c = state.board[i];
                 return c ? (
@@ -89,11 +119,11 @@ export function Table({ controller, snap }: { controller: GameController; snap: 
                     highlight={revealAll && winningIds.has(cardId(c))}
                   />
                 ) : (
-                  <div className="board-slot" key={i} />
+                  <div className="board-slot" key={i} aria-hidden="true" />
                 );
               })}
             </div>
-            <div className="pot">
+            <div className="pot" aria-label={`Pot ${potNow}`}>
               <span className="pot-label">POT</span>
               <Chips amount={potNow} tone="gold" />
             </div>
@@ -114,16 +144,18 @@ export function Table({ controller, snap }: { controller: GameController; snap: 
             />
           ))}
         </div>
-      </div>
+      </main>
 
       <footer className="table-bottom">
         {phase === "hand" && opts ? (
           <ActionBar options={opts} onAction={(a) => controller.humanAction(a)} />
         ) : phase === "hand" ? (
-          <div className="table-status">
-            {snap.thinkingSeat !== null
-              ? `${playerName(state, snap.thinkingSeat)} is thinking…`
-              : "Dealing…"}
+          <div className="table-status" role="status">
+            {snap.paused
+              ? "Paused"
+              : snap.thinkingSeat !== null
+                ? `${playerName(state, snap.thinkingSeat)} is thinking…`
+                : "Dealing…"}
           </div>
         ) : null}
       </footer>
