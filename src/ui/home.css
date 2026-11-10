@@ -87,18 +87,8 @@
   border-radius: 50%;
   background: radial-gradient(circle, var(--gold-glow), transparent 62%);
   filter: blur(8px);
-  animation: halo-breathe 6s var(--ease) infinite;
-}
-@keyframes halo-breathe {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.05);
-  }
+  opacity: 0.65;
+  /* Static glow only: a 6s infinite loop would need a pause control (2.2.2). */
 }
 
 /* ---- config card ---- */

@@ -17,8 +17,10 @@ export function renderApp(): string {
 export function renderChrome(): { header: string; footer: string } {
   const header = renderToStaticMarkup(
     <header className="home-nav">
-      <a href="/" aria-label="Sir Bluffington's Poker home" className="doc-brand">
+      {/* Name comes from the wordmark; avoid aria-label (2.5.3 label-in-name). */}
+      <a href="/" className="doc-brand">
         <Wordmark />
+        <span className="visually-hidden"> home</span>
       </a>
       <a className="home-nav-link" href="/">
         Play now →

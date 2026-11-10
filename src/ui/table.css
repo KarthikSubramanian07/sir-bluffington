@@ -17,9 +17,16 @@
   backdrop-filter: blur(8px);
   z-index: 10;
 }
-.table-leave {
+.table-leave,
+.table-pause {
   padding: 0.4em 0.8em;
   font-size: var(--step--1);
+  min-height: 24px;
+  min-width: 24px;
+}
+.table-pause kbd {
+  font-size: 0.85em;
+  opacity: 0.75;
 }
 .table-meta {
   display: flex;
@@ -240,6 +247,11 @@
   border-color: var(--gold);
   box-shadow: 0 0 0 1px var(--gold), 0 0 16px var(--gold-glow);
 }
+.table-screen.is-paused .seat--thinking .seat-avatar,
+.table-screen.is-paused .seat-win {
+  animation-play-state: paused;
+}
+
 .seat--thinking .seat-avatar {
   animation: think-pulse 1s var(--ease) infinite;
 }

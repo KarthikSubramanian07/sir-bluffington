@@ -1,3 +1,4 @@
+import { useEffect, useId, useRef } from "react";
 import type { ShowdownResult } from "../engine/showdown.ts";
 import type { GameState } from "../engine/types.ts";
 import type { LogEntry } from "../game/controller.ts";
@@ -20,12 +21,63 @@ export function PostHand({ state, showdown, log, onNext, onLeave }: PostHandProp
   const nameOf = (id: string) => state.players.find((p) => p.id === id)?.name ?? id;
   const heroWon = (showdown.winningsByPlayer.hero ?? 0) > 0;
   const notes = notableActions(log);
+  const titleId = useId();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const previouslyFocused = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    const root = panelRef.current;
+    if (!root) return;
+
+    const focusables = () =>
+      [
+        ...root.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ),
+      ].filter((el) => !el.hasAttribute("disabled") && el.tabIndex !== -1);
+
+    const first = focusables()[0];
+    first?.focus();
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onLeave();
+        return;
+      }
+      if (e.key !== "Tab" || !root) return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const firstEl = items[0]!;
+      const lastEl = items[items.length - 1]!;
+      if (e.shiftKey && document.activeElement === firstEl) {
+        e.preventDefault();
+        lastEl.focus();
+      } else if (!e.shiftKey && document.activeElement === lastEl) {
+        e.preventDefault();
+        firstEl.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      previouslyFocused.current?.focus?.();
+    };
+  }, [onLeave]);
 
   return (
-    <div className="posthand" role="dialog" aria-label="Hand result">
+    <div
+      className="posthand"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      ref={panelRef}
+    >
       <div className="posthand-card">
         <div className="posthand-head">
-          <h2 className={`posthand-title serif ${heroWon ? "is-win" : ""}`}>
+          <h2 id={titleId} className={`posthand-title serif ${heroWon ? "is-win" : ""}`}>
             {heroWon ? "You take it down." : "Hand complete."}
           </h2>
         </div>
@@ -71,7 +123,7 @@ export function PostHand({ state, showdown, log, onNext, onLeave }: PostHandProp
             Next hand →
           </button>
         </div>
-        <p className="posthand-hint num">Press Enter or Space for the next hand</p>
+        <p className="posthand-hint num">Press Enter or Space for the next hand · Esc to leave</p>
       </div>
     </div>
   );

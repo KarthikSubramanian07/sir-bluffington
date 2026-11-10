@@ -42,8 +42,14 @@ export function PlayingCard({
   if (highlight) classes.push("card--win");
 
   if (faceDown || !card) {
+    const empty = !card && !faceDown;
     return (
-      <div className={`${classes.join(" ")} card--back`} aria-hidden={!card ? true : undefined}>
+      <div
+        className={`${classes.join(" ")} card--back`}
+        aria-hidden={empty ? true : undefined}
+        role={empty ? undefined : "img"}
+        aria-label={empty ? undefined : "Face-down card"}
+      >
         <div className="card-back-emblem">
           <Monocle />
         </div>

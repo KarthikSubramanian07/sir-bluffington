@@ -42,6 +42,9 @@ export function Home({ controller, snap }: { controller: GameController; snap: S
 
   return (
     <div className="home">
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
       <header className="home-nav">
         <Wordmark />
         <a className="home-nav-link" href="#about">
@@ -49,7 +52,7 @@ export function Home({ controller, snap }: { controller: GameController; snap: S
         </a>
       </header>
 
-      <main className="home-main">
+      <main id="main" className="home-main" tabIndex={-1}>
         <section className="hero">
           <div className="hero-copy">
             <p className="eyebrow num">FREE · NO ACCOUNT · IN YOUR BROWSER</p>

@@ -97,6 +97,28 @@ a:hover {
   border: 0;
 }
 
+/* Skip link: off-screen until focused (2.4.1). */
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: var(--space-3);
+  z-index: 1000;
+  padding: 0.55em 0.9em;
+  border-radius: var(--r-sm);
+  background: var(--gold);
+  color: var(--text-inverse);
+  font-weight: 600;
+  transform: translateY(-160%);
+  transition: transform var(--dur-fast) var(--ease);
+}
+.skip-link:focus {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 ::selection {
   background: var(--gold);
   color: var(--text-inverse);

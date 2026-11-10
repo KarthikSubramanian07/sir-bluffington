@@ -3,6 +3,14 @@
 .doc-brand:hover {
   text-decoration: none;
 }
+/* In-prose links: underline so they are not colour-alone (1.4.1 / link-in-text-block). */
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.prose a:hover {
+  text-decoration-thickness: 2px;
+}
 .doc-main {
   max-width: 72ch;
 }
